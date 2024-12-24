@@ -1,2 +1,0 @@
-# Ganeden-Engine
-Wot Wot
