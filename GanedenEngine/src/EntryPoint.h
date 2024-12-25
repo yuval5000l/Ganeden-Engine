@@ -1,11 +1,11 @@
 #pragma once
-#ifdef GE_PLATFORM_WINDOWS
+#ifdef GANEDEN_API
 
 extern Ganeden::Application* Ganeden::CreateApplication();
 
 	int main(int argc, char** argv)
 	{
-		printf("ACHSAF");
+		printf("YUVAL THE FUCKING KING");
 		auto app = Ganeden::CreateApplication();
 		app->Run();
 		delete app;

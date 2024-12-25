@@ -7,6 +7,7 @@ namespace Ganeden {
 	}
 	Application::~Application()
 	{
+
 	}
 
 	void Application::Run()
