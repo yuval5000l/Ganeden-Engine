@@ -10,6 +10,7 @@ OBJECTS = $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(SOURCES))
 EXECUTABLE = sandboxapp
 
 all: $(BUILD_DIR) $(EXECUTABLE)
+	./$(EXECUTABLE)
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
