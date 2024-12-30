@@ -4,7 +4,7 @@
 	#ifdef GE_BUILD_DLL	
 		#define GANEDEN_API __declspec(dllexport)
 	#else 
-		#define GANEDEN_API __declspec(dllexport)
+		#define GANEDEN_API __declspec(dllimport)
 	#endif
 #elif defined(__APPLE__)
 	#ifdef GE_BUILD_DLL

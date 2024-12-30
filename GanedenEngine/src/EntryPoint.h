@@ -5,7 +5,11 @@ extern Ganeden::Application* Ganeden::CreateApplication();
 
 	int main(int argc, char** argv)
 	{
-		printf("YUVAL THE FUCKING KING");
+		Ganeden::Log::Init();
+		GE_CORE_WARN("Waaaaaa");
+		int b = 1;
+		GE_INFO("Awwwwww Var={0}", b);
+
 		auto app = Ganeden::CreateApplication();
 		app->Run();
 		delete app;
