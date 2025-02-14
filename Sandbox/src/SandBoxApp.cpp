@@ -17,6 +17,6 @@ Ganeden::Application* Ganeden::CreateApplication()
 {
 	
 	// Flushes the buffer
-	std::cout << std::endl;
+	//std::cout << std::endl;
 	return new Sandbox();
 }
