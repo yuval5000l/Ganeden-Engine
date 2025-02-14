@@ -12,6 +12,7 @@ namespace Ganeden {
 
 	void Application::Run()
 	{
+		// Add windowResizeEvent
 		while (true);
 	}
 	

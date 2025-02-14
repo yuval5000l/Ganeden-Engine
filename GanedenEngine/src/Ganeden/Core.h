@@ -15,3 +15,5 @@
 #else
 	#error Ganeden only supports Windows and macOS!
 #endif
+
+#define BIT(x) (1 << x)
