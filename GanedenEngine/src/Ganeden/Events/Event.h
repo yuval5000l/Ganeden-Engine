@@ -1,5 +1,6 @@
 #pragma once
 #include "..\Core.h"
+#include <sstream>
 #include <string>
 namespace Ganeden
 {
@@ -31,31 +32,32 @@ namespace Ganeden
 								virtual const char* getName() const override { return #type; }
 
 	#define EVENT_CLASS_CATEGORY(category) virtual int getCategoryFlags() const override { return category; }
+	#define ENUM_TO_STRING(enum) #enum
 
 	struct GANEDEN_API Event
 	{
-		static EventType getStaticType();
 		virtual EventType getEventType() const = 0;
-		virtual const char*  getName() const = 0;
+		virtual const char* getName() const = 0;
 		virtual int getCategoryFlags() const = 0;
 
-		std::string virtual toString() const 
-		{
-			return getName();
-		};
+		std::string virtual toString() const { return getName(); };
 		bool isInCategory(EventCategory category)
 		{
 			return getCategoryFlags() & category;
 		}
 
 		bool _handled = false;
-	}
+		inline std::ostream& operator<<(std::ostream& os)
+		{
+			return os << this->toString();
+		}
+	};
 
 	class GANEDEN_API DispatchEvent
 	{
-		public:
+	public:
 		DispatchEvent(Event& event) : _event(event) {}
-		
+
 
 		// F will be deduced by the compiler
 		template<typename T, typename F>
@@ -68,12 +70,9 @@ namespace Ganeden
 			}
 			return false;
 		}
-		private:
-			Event& _event;
+	private:
+		Event& _event;
 
-		inline std::ostream& operator<<(std::ostream& os, const Event& e)
-		{
-			return os << e.toString();
-		}
-	}
+
+	};
 };
