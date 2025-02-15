@@ -3,7 +3,8 @@
 #include "Event.h"
 namespace Ganeden
 {
-    class MouseMovedEvent : Event
+
+    class MouseMovedEvent : public Event
     {
     public:
         MouseMovedEvent(const float x, const float y) : _x(x), _y(y) {};
@@ -24,7 +25,7 @@ namespace Ganeden
         float _y;
     };
 
-    class MouseScrolledEvent : Event
+    class MouseScrolledEvent : public Event
     {
     public:
         MouseScrolledEvent(const float x, const float y) : _x(x), _y(y) {};
@@ -52,7 +53,15 @@ namespace Ganeden
         Right,
         Middle
     };
-    class MouseButtonEvent : Event
+    std::string buttonToString(MouseButton btn) {
+        switch (btn) {
+            ENUM_TO_STRING(MouseButton::Left)
+            ENUM_TO_STRING(MouseButton::Right)
+            ENUM_TO_STRING(MouseButton::Middle)
+        default: return "UNKNOWN_BUTTON";
+        }
+    }
+    class MouseButtonEvent : public Event
     {
     public:
         MouseButton getMouseButton() const { return _button; }
@@ -64,7 +73,7 @@ namespace Ganeden
         MouseButton _button = MouseButton::Left;
     };
 
-    class MouseButtonPressedEvent : MouseButtonEvent
+    class MouseButtonPressedEvent : public MouseButtonEvent
     {
     public:
         MouseButtonPressedEvent(const MouseButton button) : MouseButtonEvent(button) {};
@@ -72,12 +81,12 @@ namespace Ganeden
         std::string toString() const override
         {
             std::stringstream ss;
-            ss << "MouseButtonPressedEvent: " << ENUM_TO_STRING(_buttom);
+            ss << "MouseButtonPressedEvent: " << buttonToString(_button);
             return ss.str();
         }
         EVENT_CLASS_TYPE(MouseButtonPressed)
     }; 
-    class MouseButtonReleasedEvent : MouseButtonEvent
+    class MouseButtonReleasedEvent : public MouseButtonEvent
     {
     public:
         MouseButtonReleasedEvent(const MouseButton button) : MouseButtonEvent(button) {};
@@ -85,7 +94,7 @@ namespace Ganeden
         std::string toString() const override
         {
             std::stringstream ss;
-            ss << "MouseButtonReleasedEvent: " << ENUM_TO_STRING(_buttom);
+            ss << "MouseButtonReleasedEvent: " << buttonToString(_button);
             return ss.str();
         }
         EVENT_CLASS_TYPE(MouseButtonPressed)
