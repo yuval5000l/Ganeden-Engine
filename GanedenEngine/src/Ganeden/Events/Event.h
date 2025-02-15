@@ -1,7 +1,8 @@
 #pragma once
 #include "../Core.h"
-#include <sstream>
 #include <string>
+#include <ostream>
+#include <sstream>
 namespace Ganeden
 {
 	// Enum event type
@@ -19,12 +20,12 @@ namespace Ganeden
 
 	enum EventCategory
 	{
-		None = 0,
-		EventCategoryApplication = BIT(0),
-		EventCategoryInput = BIT(1),
-		EventCategoryKeyboard = BIT(2),
-		EventCategoryMouse = BIT(3),
-		EventCategoryMouseButton = BIT(4)
+		None                            = 0,
+		EventCategoryApplication        = BIT(0),
+		EventCategoryInput              = BIT(1),
+		EventCategoryKeyboard           = BIT(2),
+		EventCategoryMouse              = BIT(3),
+		EventCategoryMouseButton        = BIT(4)
 	};
 
 	#define EVENT_CLASS_TYPE(type) static EventType getStaticType() { return EventType::type; }\
@@ -37,19 +38,19 @@ namespace Ganeden
 
 	struct GANEDEN_API Event
 	{
+		bool _handled = false;
+
 		virtual EventType getEventType() const = 0;
 		virtual const char* getName() const = 0;
 		virtual int getCategoryFlags() const = 0;
 
-		std::string virtual toString() const { return getName(); };
+		virtual std::string toString() const { return getName(); };
 		bool isInCategory(EventCategory category)
 		{
 			return getCategoryFlags() & category;
 		}
-
-		bool _handled = false;
-
 	};
+
 	inline std::ostream& operator<<(std::ostream& os, Event& e)
 	{
 		return os << e.toString();
@@ -58,7 +59,6 @@ namespace Ganeden
 	{
 	public:
 		DispatchEvent(Event& event) : _event(event) {}
-
 
 		// F will be deduced by the compiler
 		template<typename T, typename F>
@@ -73,7 +73,5 @@ namespace Ganeden
 		}
 	private:
 		Event& _event;
-
-
 	};
 };

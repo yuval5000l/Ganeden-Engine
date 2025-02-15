@@ -6,7 +6,7 @@ ENGINE_DIR = GanedenEngine/src
 VENDOR_DIR = GanedenEngine/vendor
 BUILD_DIR = build
 
-SOURCES = $(SRC_DIR)/SandBoxApp.cpp $(ENGINE_DIR)/Ganeden/Application.cpp $(ENGINE_DIR)/Ganeden/Log.cpp
+SOURCES = $(SRC_DIR)/SandBoxApp.cpp $(wildcard $(ENGINE_DIR)/Ganeden/*.cpp)
 OBJECTS = $(SOURCES:%.cpp=$(BUILD_DIR)/%.o)
 EXECUTABLE = sandboxapp
 
@@ -32,6 +32,7 @@ $(BUILD_DIR)/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(BUILD_DIR) $(EXECUTABLE)
+	@rm -rf $(BUILD_DIR) $(EXECUTABLE)
+	@echo "Cleaned up build directory and executable"
 
 .PHONY: all clean compile loud
