@@ -7,20 +7,73 @@ namespace Ganeden
 	// Enum event category
 
 	// Define macros for virutal events
-
-	class GANEDEN_API Event
+	enum class EventType
 	{
-		static Event GetStaticType(); // TODO
-		virtual Event GetEventType() const = 0; // TODO
-		virtual const char*  GetName() const = 0;
-		virtual int GetCategoryFlags() const = 0;
-
-		std::string virtual ToString() const 
-		{
-			return GetName();
-		};
-
-	protected:
-		bool E_Handled = false;
+		None = 0,
+		WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
+		AppTick, AppUpdate, AppRender,
+		KeyPressed, KeyReleased, KeyTyped,
+		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
 	};
-}
+
+	enum EventCategory
+	{
+		None = 0,
+		EventCategoryApplication = BIT(0),
+		EventCategoryInput = BIT(1),
+		EventCategoryKeyboard = BIT(2),
+		EventCategoryMouse = BIT(3),
+		EventCategoryMouseButton = BIT(4)
+	};
+
+	#define EVENT_CLASS_TYPE(type) static EventType getStaticType() { return EventType::##type; }\
+								virtual EventType getEventType() const override { return getStaticType(); }\
+								virtual const char* getName() const override { return #type; }
+
+	#define EVENT_CLASS_CATEGORY(category) virtual int getCategoryFlags() const override { return category; }
+
+	struct GANEDEN_API Event
+	{
+		static EventType getStaticType();
+		virtual EventType getEventType() const = 0;
+		virtual const char*  getName() const = 0;
+		virtual int getCategoryFlags() const = 0;
+
+		std::string virtual toString() const 
+		{
+			return getName();
+		};
+		bool isInCategory(EventCategory category)
+		{
+			return getCategoryFlags() & category;
+		}
+
+		bool _handled = false;
+	}
+
+	class GANEDEN_API DispatchEvent
+	{
+		public:
+		DispatchEvent(Event& event) : _event(event) {}
+		
+
+		// F will be deduced by the compiler
+		template<typename T, typename F>
+		bool Dispatch(const F& func) // TODO feels not optimized, should check later
+		{
+			if (_event.getEventType() == T::getStaticType())
+			{
+				_event._handled |= func(static_cast<T&>(_event));
+				return true;
+			}
+			return false;
+		}
+		private:
+			Event& _event;
+
+		inline std::ostream& operator<<(std::ostream& os, const Event& e)
+		{
+			return os << e.toString();
+		}
+	}
+};
